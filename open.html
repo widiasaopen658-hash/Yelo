@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special For You</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff0f3;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden; color: #c9184a;
+        }
+
+        /* Container Utama */
+        .container {
+            text-align: center; background: rgba(255, 255, 255, 0.9);
+            padding: 30px; border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 85%; max-width: 350px;
+            z-index: 10; position: relative;
+        }
+
+        .slide { display: none; animation: slideIn 0.5s ease-out; }
+        .active { display: block; }
+
+        h1 { font-size: 1.5rem; margin-bottom: 15px; }
+        p { font-size: 1rem; margin-bottom: 20px; line-height: 1.4; }
+
+        input {
+            width: 80%; padding: 12px; margin-bottom: 15px;
+            border: 2px solid #ffb3c1; border-radius: 10px;
+            text-align: center; outline: none; font-size: 1rem;
+        }
+
+        .btn {
+            background: #ff4d6d; color: white; border: none;
+            padding: 12px 20px; border-radius: 15px;
+            cursor: pointer; font-weight: bold; width: 100%;
+            transition: 0.3s;
+        }
+
+        .btn:hover { background: #c9184a; transform: scale(1.02); }
+
+        #pesan-salah { color: #ff0000; font-size: 0.8rem; margin-top: 10px; display: none; }
+
+        /* Animasi Hujan Emoji */
+        .emoji-rain {
+            position: fixed; top: -50px;
+            font-size: 24px;
+            user-select: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="slide active" id="slide1">
+            <div style="font-size: 50px;">💌</div>
+            <h1>Halo Sayang</h1>
+            <p>Ada pesan singkat buat kamu, tapi jawab teka-teki ini dulu ya...</p>
+            <button class="btn" onclick="pindahSlide(2)">Mulai</button>
+        </div>
+
+        <div class="slide" id="slide2">
+            <h1>Uji Kecerdasan 🧠</h1>
+            <p>Berapa hasil dari:<br><strong>25 + 15 - 5?</strong></p>
+            <input type="number" id="jawaban-user" placeholder="Jawabanmu...">
+            <button class="btn" onclick="cekJawaban()">Buka Pesan ❤️</button>
+            <p id="pesan-salah">Ups! Salah sedikit, coba lagi ya sayang.. 😋</p>
+        </div>
+
+        <div class="slide" id="slide3">
+            <div style="font-size: 50px;">🌹</div>
+            <h1>Yey, Kamu Pinter</h1>
+            <p>Cuma mau bilang kalau...</p>
+            <h2 style="font-size: 2.2rem; margin: 10px 0;">I LOVE YOU!</h2>
+            <p>Makasih udah nemenin hari-hariku jadi lebih indah. ✨</p>
+            <button class="btn" onclick="location.reload()">Ulangi Dari Awal</button>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi pindah slide
+        function pindahSlide(n) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById('slide' + n).classList.add('active');
+        }
+
+        // Fungsi cek jawaban (35)
+        function cekJawaban() {
+            const jawaban = document.getElementById('jawaban-user').value;
+            const container = document.getElementById('slide2');
+            
+            if (jawaban == 35) {
+                pindahSlide(3);
+            } else {
+                document.getElementById('pesan-salah').style.display = 'block';
+                container.style.animation = 'none';
+                setTimeout(() => container.style.animation = 'shake 0.3s', 10);
+            }
+        }
+
+        // Fungsi membuat hujan emoji (Love & Mawar)
+        function createEmoji() {
+            const emojis = ['❤️', '💖', '🌹', '🌸', '💘'];
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji-rain';
+            emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3-5 detik
+            emoji.style.opacity = Math.random();
+            emoji.style.fontSize = (Math.random() * 20 + 20) + 'px';
+
+            document.body.appendChild(emoji);
+
+            // Hapus emoji setelah jatuh agar tidak berat
+            setTimeout(() => {
+                emoji.remove();
+            }, 5000);
+        }
+
+        // Jalankan hujan emoji setiap 300ms
+        setInterval(createEmoji, 300);
+    </script>
+</body>
+</html>
+
+
